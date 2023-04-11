@@ -3,12 +3,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 public class NetworkRunnerStarter : MonoBehaviour
 {
     NetworkRunner _nr;
-    StartGameArgs gameArgs;
 
     [Inject]
     public void Init(NetworkRunner nr) {
@@ -18,13 +18,18 @@ public class NetworkRunnerStarter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameArgs.GameMode = GameMode.Shared;
-        StartNetworkRunner();
+        StartNetworkRunner(GameMode.Shared);
     }
 
-    private void StartNetworkRunner()
+    private void StartNetworkRunner(GameMode mode)
     {
-        _nr.StartGame(gameArgs);
+        _nr.StartGame(new StartGameArgs()
+        {
+            GameMode = mode,
+            SessionName = "TestRoom",
+            Scene = SceneManager.GetActiveScene().buildIndex,
+            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+        });
     }
 
     // Update is called once per frame
