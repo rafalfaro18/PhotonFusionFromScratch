@@ -38,4 +38,16 @@ public class VideoPlayerControl : NetworkBehaviour
     public void RPC_PlayVideo() {
         _player.Play();
     }
+
+    [Command]
+    public void StopVideo()
+    {
+        RPC_StopVideo();
+    }
+
+    [Rpc]
+    public void RPC_StopVideo()
+    {
+        _player.Stop();
+    }
 }
